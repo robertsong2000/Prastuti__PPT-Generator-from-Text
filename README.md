@@ -25,11 +25,11 @@ Paste any text or markdown → choose your LLM (OpenAI / Claude / Gemini / AI Pi
 ```
 Prastuti/
 │
-├── app.py                # FastAPI backend for slide planning + PPTX generation  :contentReference[oaicite:5]{index=5}
-├── index.html            # Complete UI (dark/light theme, history, models, etc.) :contentReference[oaicite:6]{index=6}
-├── requirements.txt      # Backend dependencies                                 :contentReference[oaicite:7]{index=7}
-├── vercel.json           # Deployment config for Vercel                         :contentReference[oaicite:8]{index=8}
-├── README.md             # (Replaced by this new README)                        :contentReference[oaicite:9]{index=9}
+├── app.py                # FastAPI backend for slide planning + PPTX generation  
+├── index.html            # Complete UI (dark/light theme, history, models, etc.) 
+├── requirements.txt      # Backend dependencies                                 
+├── vercel.json           # Deployment config for Vercel                         
+├── README.md             # (Replaced by this new README)                        
 └── favicon.ico           # App icon
 ```
 
