@@ -208,9 +208,16 @@ This makes Prastuti suitable for:
 * Cloud storage support
 
 ---
+## 🙌 **Acknowledgements**
 
-# 📄 **License**
+Prastuti is powered by your custom-engineered:
 
-MIT License.
+* FastAPI backend
+* PPTX builder
+* LLM router
+* Template extractor
+* Smart image engine
+* Clean UI
 
+Every part of this system reflects thoughtful engineering and a product-focused mindset.
 ---
