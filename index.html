@@ -533,13 +533,13 @@
       saveState(); settingsModal.style.display = 'none'; toast('Settings saved', 'success');
     });
 
-    // theme toggle: toggles color-scheme
+    // theme toggle: uses data-theme on <html>
     themeToggle.addEventListener('click', () => {
-      const cs = document.documentElement.style.colorScheme || '';
-      if (cs === 'dark') document.documentElement.style.colorScheme = 'light';
-      else if (cs === 'light') document.documentElement.style.colorScheme = '';
-      else document.documentElement.style.colorScheme = 'dark';
-      toast('Theme toggled', 'info');
+      const root = document.documentElement;
+      const current = root.dataset.theme || 'dark';
+      const next = current === 'dark' ? 'light' : 'dark';
+      root.dataset.theme = next;
+      toast(`Theme: ${next}`, 'info');
     });
 
     // keyboard: Ctrl/Cmd+G generate
