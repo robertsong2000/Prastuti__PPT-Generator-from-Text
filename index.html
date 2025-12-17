@@ -17,15 +17,26 @@
 
   <style>
     :root{
+      /* DEFAULT (dark/base) theme variables */
       --bg:#0b1118; --panel:rgba(255,255,255,0.04); --border:rgba(255,255,255,0.12);
       --text:#e7eef6; --muted:#b6c3d4; --accent:#667eea; --chip:rgba(255,255,255,0.06);
       --card-radius:14px;
     }
-    @media (prefers-color-scheme: light){
-      :root{
-        --bg:#f7f9fc; --panel:#fff; --border:#e6eaf0; --text:#0f1720; --muted:#5b6b80; --accent:#3a77ff; --chip:#f2f6ff;
-      }
+
+      /* Light theme override: use when HTML has data-theme="light" */
+    :root[data-theme="light"],
+    html[data-theme="light"] {
+      --bg:#f7f9fc; --panel:#fff; --border:#e6eaf0; --text:#0f1720;
+      --muted:#5b6b80; --accent:#3a77ff; --chip:#f2f6ff;
     }
+
+    /* Dark theme override: explicit when HTML has data-theme="dark" */
+    :root[data-theme="dark"],
+    html[data-theme="dark"] {
+      --bg:#0b1118; --panel:rgba(255,255,255,0.04); --border:rgba(255,255,255,0.12);
+      --text:#e7eef6; --muted:#b6c3d4; --accent:#667eea; --chip:rgba(255,255,255,0.06);
+    }
+
 
     html,body{ height:100%; margin:0; font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Arial; background:
       radial-gradient(1200px 600px at 15% 5%, rgba(88,124,255,0.06), transparent 60%),
