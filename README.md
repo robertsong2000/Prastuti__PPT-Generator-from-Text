@@ -244,5 +244,4 @@ Prastuti is powered by your custom-engineered:
 * Smart image engine
 * Clean UI
 
-Every part of this system reflects thoughtful engineering and a product-focused mindset.
 ---
