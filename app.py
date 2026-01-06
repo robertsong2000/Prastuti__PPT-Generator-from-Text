@@ -83,6 +83,7 @@ async def generate_pptx(
     num_slides: Optional[int] = Form(None),   # <-- NEW: desired number of slides (1..40)
     reuse_images: bool = Form(False),         # copy exact images from uploaded PPT slides
     template: Optional[UploadFile] = None,    # OPTIONAL template (.pptx/.potx)
+    api_endpoint: Optional[str] = Form(None),  # Custom API endpoint for OpenAI-compatible APIs
 ):
     # Validate text
     if not text or not text.strip():
@@ -117,6 +118,7 @@ async def generate_pptx(
             model=(model or "").strip() or None,
             target_slides=target_slides,   # pass through to instruct LLM
             max_retries=2,
+            api_endpoint=(api_endpoint or "").strip() or None,
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"LLM error: {e}")
@@ -182,11 +184,12 @@ async def build_slide_plan_with_retry(
     model: Optional[str],
     target_slides: Optional[int],
     max_retries: int = 2,
+    api_endpoint: Optional[str] = None,
 ) -> Dict[str, Any]:
     last_err: Optional[Exception] = None
     for attempt in range(max_retries + 1):
         try:
-            return await build_slide_plan(text, guidance, provider, api_key, model, target_slides)
+            return await build_slide_plan(text, guidance, provider, api_key, model, target_slides, api_endpoint)
         except Exception as e:
             last_err = e
             if attempt == max_retries:
@@ -237,6 +240,7 @@ async def build_slide_plan(
     api_key: str,
     model: Optional[str],
     target_slides: Optional[int],
+    api_endpoint: Optional[str] = None,
 ) -> Dict[str, Any]:
     model_name = (
         model
@@ -256,14 +260,18 @@ async def build_slide_plan(
         if OpenAI is None:
             raise RuntimeError("openai package not installed. `pip install openai`")
         client_kwargs = {"api_key": api_key}
+        if api_endpoint:
+            cleaned_endpoint = api_endpoint.rstrip('/')
+            if cleaned_endpoint.endswith('/chat/completions'):
+                cleaned_endpoint = cleaned_endpoint[:-17]
+            client_kwargs["base_url"] = cleaned_endpoint
         client = OpenAI(**client_kwargs)
-        resp = client.responses.create(
+        resp = client.chat.completions.create(
             model=model_name,
-            input=[{"role": "user", "content": instruction}],
-
+            messages=[{"role": "user", "content": instruction}],
             temperature=0.2,
         )
-        content = _extract_openai_output_text(resp)
+        content = resp.choices[0].message.content
         data = _safe_json_parse(content)
 
     elif provider == "anthropic":
